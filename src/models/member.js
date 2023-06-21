@@ -30,35 +30,3 @@ const Members = dbConnection.define('member', {
 });
 
 module.exports = Members;
-
-module.exports.createUser = async function (nama, email, password, telepon, foto) {
-    try {
-      const data = await Members.create({nama, email, password, telepon, foto});
-      return data.toJSON();
-    } catch (error) {
-      console.error(error);
-    }
-};
-
-module.exports.getMember = async function () {
-  try {
-    const getMember = await Members.findAll();
-    const membersDataValues = getMember.map(data => data.dataValues);
-    return membersDataValues;
-  } catch (error) {
-    console.error(error);
-  }
-};
-
-module.exports.isEmailValid = async function (email) {
-  try {
-    const check = await Members.findOne({ where: { email: email } });
-    if (check) {
-      return true;
-    } else {
-      return false;
-    }
-  } catch (error) {
-    console.error(error);
-  }
-};
