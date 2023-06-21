@@ -1,5 +1,6 @@
 'use strict';
 const Transaksi = require('../models/transaksi');
+const { v4: uuidv4 } = require('uuid');
 
 const getAllTransaksiHandler = async (request, h) => {
   
@@ -41,7 +42,7 @@ const getTransaksiByMemberHandler = async (request, h) => {
 
 const buatTransaksiHandler = async (request, h) => {
   const { idMember, namaMember, idBatik, namaBatik, meter, hargaSatuan, hargaTotal, status } = request.payload;
-  const id = "A12346"; // TODO : auto generate
+  const id = "ID" + uuidv4().slice(0, 6).toUpperCase();
 
   try {
     const data = await Transaksi.create({ id, idMember, namaMember, idBatik, namaBatik, meter, hargaSatuan, hargaTotal, status });

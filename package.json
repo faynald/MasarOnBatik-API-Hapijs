@@ -12,6 +12,7 @@
   "dependencies": {
     "@hapi/hapi": "^21.3.2",
     "mysql2": "^3.4.0",
-    "sequelize": "^6.32.1"
+    "sequelize": "^6.32.1",
+    "uuid": "^9.0.0"
   }
 }
