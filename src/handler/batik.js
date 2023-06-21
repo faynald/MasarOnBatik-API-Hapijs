@@ -22,8 +22,7 @@ const inputBatikHandler = async (request, h) => {
 };
 
 const updateBatikHandler = async (request, h) => {
-  const { id } = request.params;
-  const { nama, harga, asal, deskripsi, foto } = request.payload;
+  const { id, nama, harga, asal, deskripsi, foto } = request.payload;
 
   const batik = await Batik.findOne({ where: { id: id} });
   if (batik) {
