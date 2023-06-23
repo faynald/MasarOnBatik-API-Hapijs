@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "@hapi/hapi": "^21.3.2",
+    "moment-timezone": "^0.5.43",
     "mysql2": "^3.4.0",
     "sequelize": "^6.32.1",
     "uuid": "^9.0.0"

@@ -1,4 +1,4 @@
-const { getAllBatikHandler, inputBatikHandler, updateBatikHandler } = require("./handler/batik");
+const { getAllBatikHandler, inputBatikHandler, updateBatikHandler, getBatikByIdHandler } = require("./handler/batik");
 const { getAllMemberHandler, registerMemberHandler, loginMemberHandler } = require("./handler/member");
 const { getAllTransaksiHandler, getTransaksiByMemberHandler, buatTransaksiHandler, getTransaksiByStatusHandler, updateTransaksiHandler } = require("./handler/transaksi");
 
@@ -24,13 +24,36 @@ const routes = [
     handler: getAllBatikHandler
   },
   {
+    method: 'GET',
+    path: '/batik/{id}',
+    handler: getBatikByIdHandler
+  },
+  {
     method: 'POST',
     path: '/batik',
+    options: {
+      payload: {
+        output: 'stream',
+        parse: true,
+        allow: 'multipart/form-data',
+        multipart : true ,
+        maxBytes: 30 * 1024 * 1024 // 30MB dalam byte
+      }
+    },
     handler: inputBatikHandler
   },
   {
     method: 'PUT',
     path: '/batik',
+    options: {
+      payload: {
+        output: 'stream',
+        parse: true,
+        allow: 'multipart/form-data',
+        multipart : true ,
+        maxBytes: 30 * 1024 * 1024 // 30MB dalam byte
+      }
+    },
     handler: updateBatikHandler
   },
   {
