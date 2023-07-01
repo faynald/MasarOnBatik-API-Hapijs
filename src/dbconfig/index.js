@@ -7,4 +7,15 @@ const sequelize = new Sequelize(process.env.DATABASE, process.env.DB_USERNAME, p
     dialect: process.env.DB_DIALECT
 });
 
+async function checkDatabaseConnection() {
+    try {
+      await sequelize.authenticate();
+      console.log('Database connection has been established successfully.');
+    } catch (error) {
+      console.error('Unable to connect to the database:', error);
+    }
+  }
+  
+checkDatabaseConnection();
+
 module.exports.connect = sequelize;
