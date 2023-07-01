@@ -3,6 +3,7 @@ const Batik = require('../models/batik');
 const fs = require('fs');
 const path = require('path');
 const moment = require('moment-timezone');
+const ftp = require("basic-ftp");
 
 const getTimeInJakartaWithoutSymbols = () => {
   const jakartaTime = moment().tz('Asia/Jakarta');
@@ -11,35 +12,34 @@ const getTimeInJakartaWithoutSymbols = () => {
 };
 
 const saveFiles = async (files) => {
+  const client = new ftp.Client()
+  try {
+    await client.access({
+        host: process.env.FTP_HOST,
+        user: process.env.FTP_USERNAME,
+        password: process.env.FTP_PASSWORD,
+        secure: true
+    })
+  }
+  catch(err) {
+    console.log(err)
+  }
   const fileNameArray = [];
 
-  if(Array.isArray(files) && files.length > 1) { // jika upload lebih dari 1
+  if(files && Array.isArray(files) && files.length > 1) { // jika upload lebih dari 1
     for (const file of files) {
-      const time = `${getTimeInJakartaWithoutSymbols()}${path.extname(file.hapi.filename)}`;
-      const fileStream = fs.createWriteStream(`./uploads/${time}`);
-      fileNameArray.push(time);
-
-      // Simpan file ke direktori yang diinginkan
-      await new Promise((resolve, reject) => {
-        file.pipe(fileStream);
-        file.on('end', resolve);
-        file.on('error', reject);
-      });
+      const fileName = `${getTimeInJakartaWithoutSymbols()}${path.extname(file.hapi.filename)}`;
+      fileNameArray.push(fileName);
+      await client.uploadFrom(file, `public_html/${fileName}`)
     }
-  } else if (!Array.isArray(files) && files.hapi.filename != "") { // jika file hanya 1
-    const time = `${getTimeInJakartaWithoutSymbols()}${path.extname(files.hapi.filename)}`;
-    const fileStream = fs.createWriteStream(`./uploads/${time}`);
-    fileNameArray.push(time);
-
-    // Simpan file ke direktori yang diinginkan
-    await new Promise((resolve, reject) => {
-      files.pipe(fileStream);
-      files.on('end', resolve);
-      files.on('error', reject);
-    });
-  } else if(files.hapi.filename === "") { // file tidak diisi
+  } else if (files && !Array.isArray(files)) { // jika file hanya 1
+    const fileName = `${getTimeInJakartaWithoutSymbols()}${path.extname(files.hapi.filename)}`;
+    fileNameArray.push(fileName);
+    await client.uploadFrom(files, `public_html/${fileName}`);
+  } else if(!files) { // file tidak diisi
     console.log("foto kosong");
   }
+  client.close()
   return fileNameArray;
 }
 
