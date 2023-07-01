@@ -5,6 +5,15 @@ const { getAllTransaksiHandler, getTransaksiByMemberHandler, buatTransaksiHandle
 const routes = [
   {
     method: 'GET',
+    path: '/',
+    handler: async (request, h) => {
+      return h.response({
+        status: 'Hello World'
+      }).code(200);
+    }
+  },
+  {
+    method: 'GET',
     path: '/member',
     handler: getAllMemberHandler,
   },
