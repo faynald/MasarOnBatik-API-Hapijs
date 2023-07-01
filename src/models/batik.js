@@ -15,6 +15,12 @@ const Batik = dbConnection.define('batik', {
       harga: {
           type: DataTypes.INTEGER
       },
+      stok: {
+          type: DataTypes.INTEGER
+      },
+      terjual: {
+          type: DataTypes.INTEGER
+      },
       asal: {
           type: DataTypes.STRING
       },

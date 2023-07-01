@@ -65,13 +65,13 @@ const getBatikByIdHandler = async (request, h) => {
 };
 
 const inputBatikHandler = async (request, h) => {
-  const { nama, harga, asal, deskripsi, files } = request.payload;
+  const { nama, harga, stok, terjual, asal, deskripsi, files } = request.payload;
   var foto = null;
 
   var fileNameArray = await saveFiles(files);
   foto = await fileNameArray.join(',');
   
-  const data = await Batik.create({ nama, harga, asal, deskripsi, foto });
+  const data = await Batik.create({ nama, harga, stok, terjual, asal, deskripsi, foto });
   return h.response({
     status: 'success',
     data: data.toJSON()
@@ -79,7 +79,7 @@ const inputBatikHandler = async (request, h) => {
 };
 
 const updateBatikHandler = async (request, h) => {
-  const { id, nama, harga, asal, deskripsi, tambahFoto, hapusFoto } = request.payload;
+  const { id, nama, harga, stok, terjual, asal, deskripsi, tambahFoto, hapusFoto } = request.payload;
 
   const batik = await Batik.findOne({ where: { id: id} });
   if (batik) {
@@ -96,6 +96,8 @@ const updateBatikHandler = async (request, h) => {
       // Update nilai-nilai kolom yang ingin diubah
       nama: nama,
       harga: harga,
+      stok,
+      terjual: terjual,
       asal: asal,
       deskripsi: deskripsi,
       foto: foto
