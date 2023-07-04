@@ -1,4 +1,4 @@
-const { getAllBatikHandler, inputBatikHandler, updateBatikHandler, getBatikByIdHandler } = require("./handler/batik");
+const { getAllBatikHandler, inputBatikHandler, updateBatikHandler, getBatikByIdHandler, deleteBatikHandler } = require("./handler/batik");
 const { getAllMemberHandler, registerMemberHandler, loginMemberHandler } = require("./handler/member");
 const { getAllTransaksiHandler, getTransaksiByMemberHandler, buatTransaksiHandler, getTransaksiByStatusHandler, updateTransaksiHandler } = require("./handler/transaksi");
 
@@ -64,6 +64,11 @@ const routes = [
       }
     },
     handler: updateBatikHandler
+  },
+  {
+    method: 'DELETE',
+    path: '/batik/{id}',
+    handler: deleteBatikHandler
   },
   {
     method: 'GET',

@@ -43,6 +43,32 @@ const saveFiles = async (files) => {
   return fileNameArray;
 }
 
+const deleteFiles = async (files) => {
+  const client = new ftp.Client();
+
+  try {
+    await client.access({
+      host: process.env.FTP_HOST,
+      user: process.env.FTP_USERNAME,
+      password: process.env.FTP_PASSWORD,
+      secure: true
+  })
+
+  if(files.length > 0) { // jika upload lebih dari 1
+    for (const file of files) {
+      await client.remove(`public_html/${file}`);
+    }
+  }
+  } catch (error) {
+    return h.response({
+      status: 'Terjadi kesalahan'
+    }).code(500);
+  } finally {
+    // Tutup koneksi FTP
+    await client.close();
+  }
+}
+
 const getAllBatikHandler = async (request, h) => {
   
   var batik = await Batik.findAll();
@@ -104,7 +130,7 @@ const updateBatikHandler = async (request, h) => {
     });
     return h.response({
       status: 'success',
-      data: batik // TODO : TEST this
+      data: batik
     })
   } else {
     return h.response({
@@ -113,9 +139,39 @@ const updateBatikHandler = async (request, h) => {
   }
 };
 
+const deleteBatikHandler = async (request, h) => {
+  const { id } = request.params;
+  try {
+    const batik = await Batik.findOne({ where: { id: id } });
+
+    if (!batik) {
+      return h.response({
+        status: 'Data batik tidak ditemukan'
+      }).code(404);
+    }
+
+    const foto = batik.dataValues.foto.split(',');
+    console.log('========== batik.dataValues.foto =========');
+    console.log(batik.dataValues.foto);
+    console.log('========== foto =========');
+    console.log(foto);
+    await deleteFiles(foto);
+    await batik.destroy();
+
+    return h.response({
+      status: 'Berhasil menghapus batik'
+    })
+  } catch (error) {
+    return h.response({
+      status: 'Terjadi kesalahan'
+    }).code(500);
+  }
+}
+
 module.exports = {
   getAllBatikHandler,
   getBatikByIdHandler,
   inputBatikHandler,
-  updateBatikHandler
+  updateBatikHandler,
+  deleteBatikHandler
 }
