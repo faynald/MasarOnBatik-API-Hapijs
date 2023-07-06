@@ -1,6 +1,6 @@
 const { getAllBatikHandler, inputBatikHandler, updateBatikHandler, getBatikByIdHandler, deleteBatikHandler } = require("./handler/batik");
 const { getAllMemberHandler, registerMemberHandler, loginMemberHandler } = require("./handler/member");
-const { getAllTransaksiHandler, getTransaksiByMemberHandler, buatTransaksiHandler, getTransaksiByStatusHandler, updateTransaksiHandler } = require("./handler/transaksi");
+const { getAllTransaksiHandler, getTransaksiByMemberHandler, buatTransaksiHandler, getTransaksiByStatusHandler, updateTransaksiHandler, getTransaksiByMemberAndStatusHandler, getTransaksiDetailHandler } = require("./handler/transaksi");
 
 const routes = [
   {
@@ -81,9 +81,19 @@ const routes = [
     handler: getTransaksiByMemberHandler
   },
   {
+    method: 'GET',
+    path: '/transaksi-detail/{id}',
+    handler: getTransaksiDetailHandler
+  },
+  {
     method: 'POST',
     path: '/transaksi-filter',
     handler: getTransaksiByStatusHandler
+  },
+  {
+    method: 'GET',
+    path: '/transaksi-user-filter',
+    handler: getTransaksiByMemberAndStatusHandler
   },
   {
     method: 'POST',

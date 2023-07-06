@@ -40,6 +40,46 @@ const getTransaksiByMemberHandler = async (request, h) => {
   }
 };
 
+const getTransaksiDetailHandler = async (request, h) => {
+  const { id } = request.params;
+
+  var transaksi = await Transaksi.findOne({ where: { id: id } });
+  if (transaksi) {
+      return h.response({
+        status: 'success',
+        data: transaksi.toJSON()
+      });
+  } else {
+    return h.response({
+      status: 'Data transaksi tidak ditemukan'
+    }).code(404)
+  }
+};
+
+const getTransaksiByMemberAndStatusHandler = async (request, h) => {
+  const { id, status } = request.query;
+  console.log(id, status);
+
+  var transaksi = await Transaksi.findAll({ 
+    where: { 
+      idMember: id,
+      status: status
+    }, 
+    order: [['createdAt', 'DESC']] 
+  });
+  if (transaksi) {
+    transaksi = transaksi.map(data => data.dataValues);
+      return h.response({
+        status: 'success',
+        data: transaksi
+      });
+  } else {
+    return h.response({
+      status: 'Data transaksi tidak ditemukan'
+    }).code(404)
+  }
+};
+
 const buatTransaksiHandler = async (request, h) => {
   const { idMember, namaMember, idBatik, namaBatik, meter, hargaSatuan, hargaTotal, status } = request.payload;
   const id = "ID" + uuidv4().slice(0, 6).toUpperCase();
@@ -81,7 +121,9 @@ const updateTransaksiHandler = async (request, h) => {
 module.exports = {
   getAllTransaksiHandler,
   getTransaksiByMemberHandler,
+  getTransaksiDetailHandler,
   getTransaksiByStatusHandler,
+  getTransaksiByMemberAndStatusHandler,
   buatTransaksiHandler,
   updateTransaksiHandler
 }
