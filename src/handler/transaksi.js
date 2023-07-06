@@ -81,11 +81,11 @@ const getTransaksiByMemberAndStatusHandler = async (request, h) => {
 };
 
 const buatTransaksiHandler = async (request, h) => {
-  const { idMember, namaMember, idBatik, namaBatik, meter, hargaSatuan, hargaTotal, status } = request.payload;
+  const { idMember, namaMember, idBatik, namaBatik, meter, hargaSatuan, hargaTotal, foto, status } = request.payload;
   const id = "ID" + uuidv4().slice(0, 6).toUpperCase();
 
   try {
-    const data = await Transaksi.create({ id, idMember, namaMember, idBatik, namaBatik, meter, hargaSatuan, hargaTotal, status });
+    const data = await Transaksi.create({ id, idMember, namaMember, idBatik, namaBatik, meter, hargaSatuan, hargaTotal, foto, status });
     return h.response({
       status: 'success',
       data: data.toJSON()

@@ -15,6 +15,7 @@ const Transaksi = dbConnection.define('transaksi', {
       meter: DataTypes.INTEGER,
       hargaSatuan: DataTypes.INTEGER,
       hargaTotal: DataTypes.INTEGER,
+      foto: DataTypes.STRING,
       status: DataTypes.ENUM(['Menunggu', 'Diproses', 'Pembayaran', 'Selesai', 'Dibatalkan'])
     },
     {
