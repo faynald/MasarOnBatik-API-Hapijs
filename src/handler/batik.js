@@ -91,21 +91,23 @@ const getBatikByIdHandler = async (request, h) => {
 };
 
 const inputBatikHandler = async (request, h) => {
-  const { nama, harga, stok, terjual, asal, deskripsi, files } = request.payload;
+  const { nama, harga, stok, terjual, deskripsi, files } = request.payload;
   var foto = null;
 
   var fileNameArray = await saveFiles(files);
   foto = await fileNameArray.join(',');
   
-  const data = await Batik.create({ nama, harga, stok, terjual, asal, deskripsi, foto });
+  const data = await Batik.create({ nama, harga, stok, terjual, deskripsi, foto });
+  const batik = await Batik.findOne({ where: { id: data.id} });
+
   return h.response({
     status: 'success',
-    data: data.toJSON()
+    data: batik.toJSON()
   })
 };
 
 const updateBatikHandler = async (request, h) => {
-  const { id, nama, harga, stok, terjual, asal, deskripsi, tambahFoto, hapusFoto } = request.payload;
+  const { id, nama, harga, stok, terjual, deskripsi, tambahFoto, hapusFoto } = request.payload;
 
   const batik = await Batik.findOne({ where: { id: id} });
   if (batik) {
@@ -124,7 +126,6 @@ const updateBatikHandler = async (request, h) => {
       harga: harga,
       stok,
       terjual: terjual,
-      asal: asal,
       deskripsi: deskripsi,
       foto: foto
     });

@@ -13,7 +13,7 @@ const getAllTransaksiHandler = async (request, h) => {
 };
 
 const getTransaksiByStatusHandler = async (request, h) => {
-  const { status } = request.payload;
+  const { status } = request.query;
   
   var transaksi = await Transaksi.findAll({ where: { status: status }, order: [['createdAt', 'DESC']] });
   transaksi = transaksi.map(data => data.dataValues);
@@ -115,7 +115,28 @@ const updateTransaksiHandler = async (request, h) => {
       status: 'data tidak ditemukan'
     })
   }
+};
+
+const updateStatusTransaksiHandler = async (request, h) => {
+  const { id, status } = request.payload;
   
+  const transaksi = await Transaksi.findOne({ where: { id: id} });
+
+  if (transaksi) {
+    try {
+      await transaksi.update({ status });
+      return h.response({
+        status: 'success',
+        data: transaksi
+      })
+    } catch (error) {
+      console.log(error);
+    }
+  } else {
+    return h.response({
+      status: 'data tidak ditemukan'
+    })
+  }
 };
 
 module.exports = {
@@ -125,5 +146,6 @@ module.exports = {
   getTransaksiByStatusHandler,
   getTransaksiByUserAndStatusHandler,
   buatTransaksiHandler,
-  updateTransaksiHandler
+  updateTransaksiHandler,
+  updateStatusTransaksiHandler
 }

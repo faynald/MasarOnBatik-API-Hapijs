@@ -21,6 +21,5 @@ const Transaksi = dbConnection.define('transaksi', {
     {
         freezeTableName: true
 });
-dbConnection.sync();
 
 module.exports = Transaksi;
