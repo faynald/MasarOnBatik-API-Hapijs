@@ -1,9 +1,9 @@
-const Connection = require('./../dbconfig');
+const Connection = require('../dbconfig');
 const { DataTypes } = require('sequelize');
 
 const dbConnection = Connection.connect;
 
-const Members = dbConnection.define('member', {
+const User = dbConnection.define('user', {
       id: {
           type: DataTypes.INTEGER,
           primaryKey: true,
@@ -29,4 +29,4 @@ const Members = dbConnection.define('member', {
         freezeTableName: true
 });
 
-module.exports = Members;
+module.exports = User;

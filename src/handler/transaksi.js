@@ -23,10 +23,10 @@ const getTransaksiByStatusHandler = async (request, h) => {
   });
 };
 
-const getTransaksiByMemberHandler = async (request, h) => {
+const getTransaksiByUserHandler = async (request, h) => {
   const { id } = request.params;
 
-  var transaksi = await Transaksi.findAll({ where: { idMember: id }, order: [['createdAt', 'DESC']] });
+  var transaksi = await Transaksi.findAll({ where: { idUser: id }, order: [['createdAt', 'DESC']] });
   if (transaksi) {
     transaksi = transaksi.map(data => data.dataValues);
       return h.response({
@@ -56,13 +56,13 @@ const getTransaksiDetailHandler = async (request, h) => {
   }
 };
 
-const getTransaksiByMemberAndStatusHandler = async (request, h) => {
+const getTransaksiByUserAndStatusHandler = async (request, h) => {
   const { id, status } = request.query;
   console.log(id, status);
 
   var transaksi = await Transaksi.findAll({ 
     where: { 
-      idMember: id,
+      idUser: id,
       status: status
     }, 
     order: [['createdAt', 'DESC']] 
@@ -81,11 +81,11 @@ const getTransaksiByMemberAndStatusHandler = async (request, h) => {
 };
 
 const buatTransaksiHandler = async (request, h) => {
-  const { idMember, namaMember, idBatik, namaBatik, meter, hargaSatuan, hargaTotal, foto, status } = request.payload;
+  const { idUser, namaUser, idBatik, namaBatik, meter, hargaSatuan, hargaTotal, foto, status } = request.payload;
   const id = "ID" + uuidv4().slice(0, 6).toUpperCase();
 
   try {
-    const data = await Transaksi.create({ id, idMember, namaMember, idBatik, namaBatik, meter, hargaSatuan, hargaTotal, foto, status });
+    const data = await Transaksi.create({ id, idUser, namaUser, idBatik, namaBatik, meter, hargaSatuan, hargaTotal, foto, status });
     return h.response({
       status: 'success',
       data: data.toJSON()
@@ -96,13 +96,13 @@ const buatTransaksiHandler = async (request, h) => {
 };
 
 const updateTransaksiHandler = async (request, h) => {
-  const { id, idMember, namaMember, idBatik, namaBatik, meter, hargaSatuan, hargaTotal, status } = request.payload;
+  const { id, idUser, namaUser, idBatik, namaBatik, meter, hargaSatuan, hargaTotal, status } = request.payload;
   
   const transaksi = await Transaksi.findOne({ where: { id: id} });
 
   if (transaksi) {
     try {
-      await transaksi.update({ id, idMember, namaMember, idBatik, namaBatik, meter, hargaSatuan, hargaTotal, status });
+      await transaksi.update({ id, idUser, namaUser, idBatik, namaBatik, meter, hargaSatuan, hargaTotal, status });
       return h.response({
         status: 'success',
         data: transaksi
@@ -120,10 +120,10 @@ const updateTransaksiHandler = async (request, h) => {
 
 module.exports = {
   getAllTransaksiHandler,
-  getTransaksiByMemberHandler,
+  getTransaksiByUserHandler,
   getTransaksiDetailHandler,
   getTransaksiByStatusHandler,
-  getTransaksiByMemberAndStatusHandler,
+  getTransaksiByUserAndStatusHandler,
   buatTransaksiHandler,
   updateTransaksiHandler
 }

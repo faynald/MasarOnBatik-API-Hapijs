@@ -1,6 +1,6 @@
 const { getAllBatikHandler, inputBatikHandler, updateBatikHandler, getBatikByIdHandler, deleteBatikHandler } = require("./handler/batik");
-const { getAllMemberHandler, registerMemberHandler, loginMemberHandler } = require("./handler/member");
-const { getAllTransaksiHandler, getTransaksiByMemberHandler, buatTransaksiHandler, getTransaksiByStatusHandler, updateTransaksiHandler, getTransaksiByMemberAndStatusHandler, getTransaksiDetailHandler } = require("./handler/transaksi");
+const { getAllUserHandler, registerUserHandler, loginUserHandler } = require("./handler/user");
+const { getAllTransaksiHandler, getTransaksiByUserHandler, buatTransaksiHandler, getTransaksiByStatusHandler, updateTransaksiHandler, getTransaksiByUserAndStatusHandler, getTransaksiDetailHandler } = require("./handler/transaksi");
 
 const routes = [
   {
@@ -15,17 +15,17 @@ const routes = [
   {
     method: 'GET',
     path: '/member',
-    handler: getAllMemberHandler,
+    handler: getAllUserHandler,
   },
   {
     method: 'POST',
     path: '/member',
-    handler: registerMemberHandler
+    handler: registerUserHandler
   },
   {
     method: 'POST',
     path: '/login',
-    handler: loginMemberHandler
+    handler: loginUserHandler
   },
   {
     method: 'GET',
@@ -78,7 +78,7 @@ const routes = [
   {
     method: 'GET',
     path: '/transaksi/{id}',
-    handler: getTransaksiByMemberHandler
+    handler: getTransaksiByUserHandler
   },
   {
     method: 'GET',
@@ -93,7 +93,7 @@ const routes = [
   {
     method: 'GET',
     path: '/transaksi-user-filter',
-    handler: getTransaksiByMemberAndStatusHandler
+    handler: getTransaksiByUserAndStatusHandler
   },
   {
     method: 'POST',
