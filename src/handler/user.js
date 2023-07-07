@@ -49,5 +49,4 @@ module.exports = {
   getAllUserHandler, 
   registerUserHandler,
   loginUserHandler,
-  loginAdminHandler,
 };

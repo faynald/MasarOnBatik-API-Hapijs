@@ -1,6 +1,7 @@
 const { getAllBatikHandler, inputBatikHandler, updateBatikHandler, getBatikByIdHandler, deleteBatikHandler } = require("./handler/batik");
 const { getAllUserHandler, registerUserHandler, loginUserHandler } = require("./handler/user");
 const { getAllTransaksiHandler, getTransaksiByUserHandler, buatTransaksiHandler, getTransaksiByStatusHandler, updateTransaksiHandler, getTransaksiByUserAndStatusHandler, getTransaksiDetailHandler } = require("./handler/transaksi");
+const { loginAdminHandler, registerAdminHandler, getAllAdminHandler } = require("./handler/admin");
 
 const routes = [
   {
@@ -14,18 +15,33 @@ const routes = [
   },
   {
     method: 'GET',
-    path: '/member',
+    path: '/user',
     handler: getAllUserHandler,
   },
   {
     method: 'POST',
-    path: '/member',
+    path: '/user',
     handler: registerUserHandler
   },
   {
     method: 'POST',
     path: '/login',
     handler: loginUserHandler
+  },
+  {
+    method: 'GET',
+    path: '/admin',
+    handler: getAllAdminHandler,
+  },
+  {
+    method: 'POST',
+    path: '/admin',
+    handler: registerAdminHandler
+  },
+  {
+    method: 'POST',
+    path: '/admin/login',
+    handler: loginAdminHandler
   },
   {
     method: 'GET',
