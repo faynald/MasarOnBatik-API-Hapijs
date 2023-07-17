@@ -13,7 +13,7 @@ const getAllAdminHandler = async (request, h) => {
 };
 
 const registerAdminHandler = async (request, h) => {
-  const { nama, email, password, telepon, foto} = request.payload;
+  const { nama, email, password, telepon, foto, umkm, alamatUmkm} = request.payload;
   
   const check = await Admin.findOne({ where: { email: email } });
   
@@ -22,7 +22,7 @@ const registerAdminHandler = async (request, h) => {
       status: 'email already registered'
     }).code(403)
   }
-  const data = await Admin.create({nama, email, password, telepon, foto});
+  const data = await Admin.create({nama, email, password, telepon, foto, umkm, alamatUmkm});
   return h.response({
     status: 'success',
     data: data.toJSON()
