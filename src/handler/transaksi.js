@@ -1,6 +1,7 @@
 'use strict';
 const Transaksi = require('../models/transaksi');
 const { v4: uuidv4 } = require('uuid');
+const Sequelize = require('sequelize');
 
 const getAllTransaksiHandler = async (request, h) => {
   
@@ -139,6 +140,109 @@ const updateStatusTransaksiHandler = async (request, h) => {
   }
 };
 
+// Function to get transaction report by quantity sold and transaction time
+const getTransactionReportByQuantityAndTime = async (request, h) => {
+  try {
+    // Group by namaBatik and sum the meter and hargaTotal
+    const report = await Transaksi.findAll({
+      attributes: [
+        'namaBatik',
+        [Sequelize.fn('sum', Sequelize.col('meter')), 'totalTerjual'],
+        [Sequelize.fn('sum', Sequelize.col('hargaTotal')), 'totalPemasukan'],
+      ],
+      group: ['namaBatik'],
+      order: [[Sequelize.literal('totalTerjual'), 'DESC']],
+    });
+
+    return h.response({
+      status: 'success',
+      data: report
+    })
+  } catch (error) {
+    return h.response({
+      status: 'error',
+      data: error.message
+    })
+  }
+}
+
+// Function to get transaction report by transaction date
+const getTransactionReportByDay = async (request, h) => {
+  try {
+    // Group by createdAt date and sum the meter and hargaTotal
+    var report = await Transaksi.findAll({
+      attributes: [
+        [Sequelize.fn('DATE_FORMAT', Sequelize.col('createdAt'), '%Y-%m-%d'), 'tanggalTransaksi'],
+        [Sequelize.fn('sum', Sequelize.col('meter')), 'totalTerjual'],
+        [Sequelize.fn('sum', Sequelize.col('hargaTotal')), 'totalPemasukan'],
+      ],
+      group: [Sequelize.fn('DATE_FORMAT', Sequelize.col('createdAt'), '%Y-%m-%d')],
+      order: [[Sequelize.literal('tanggalTransaksi'), 'DESC']],
+    });
+    return h.response({
+      status: 'success',
+      data: report
+    })
+  } catch (error) {
+    return h.response({
+      status: 'error',
+      data: error.message
+    })
+  }
+}
+
+// Function to get transaction report by transaction month
+const getTransactionReportByMonth = async (request, h) => {
+  try {
+    const groupBy = '%Y-%m';
+    // Group by createdAt date and sum the meter and hargaTotal
+    var report = await Transaksi.findAll({
+      attributes: [
+        [Sequelize.fn('DATE_FORMAT', Sequelize.col('createdAt'), '%Y-%m'), 'tanggalTransaksi'],
+        [Sequelize.fn('sum', Sequelize.col('meter')), 'totalTerjual'],
+        [Sequelize.fn('sum', Sequelize.col('hargaTotal')), 'totalPemasukan'],
+      ],
+      group: [Sequelize.fn('DATE_FORMAT', Sequelize.col('createdAt'), '%Y-%m')],
+      order: [[Sequelize.literal('tanggalTransaksi'), 'DESC']],
+    });
+    return h.response({
+      status: 'success',
+      data: report
+    })
+  } catch (error) {
+    return h.response({
+      status: 'error',
+      data: error.message
+    })
+  }
+}
+
+// Function to get transaction report by transaction month
+const getTransactionReportByYear = async (request, h) => {
+  try {
+    const groupBy = '%Y-%m';
+    // Group by createdAt date and sum the meter and hargaTotal
+    var report = await Transaksi.findAll({
+      attributes: [
+        [Sequelize.fn('DATE_FORMAT', Sequelize.col('createdAt'), '%Y'), 'tanggalTransaksi'],
+        [Sequelize.fn('sum', Sequelize.col('meter')), 'totalTerjual'],
+        [Sequelize.fn('sum', Sequelize.col('hargaTotal')), 'totalPemasukan'],
+      ],
+      group: [Sequelize.fn('DATE_FORMAT', Sequelize.col('createdAt'), '%Y')],
+      order: [[Sequelize.literal('tanggalTransaksi'), 'DESC']],
+    });
+    return h.response({
+      status: 'success',
+      data: report
+    })
+  } catch (error) {
+    return h.response({
+      status: 'error',
+      data: error.message
+    })
+  }
+}
+
 module.exports = {
   getAllTransaksiHandler,
   getTransaksiByUserHandler,
@@ -147,5 +251,9 @@ module.exports = {
   getTransaksiByUserAndStatusHandler,
   buatTransaksiHandler,
   updateTransaksiHandler,
-  updateStatusTransaksiHandler
+  updateStatusTransaksiHandler,
+  getTransactionReportByDay,
+  getTransactionReportByMonth,
+  getTransactionReportByYear,
+  getTransactionReportByQuantityAndTime
 }

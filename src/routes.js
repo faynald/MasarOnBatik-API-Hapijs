@@ -1,6 +1,6 @@
 const { getAllBatikHandler, inputBatikHandler, updateBatikHandler, getBatikByIdHandler, deleteBatikHandler } = require("./handler/batik");
 const { getAllUserHandler, registerUserHandler, loginUserHandler } = require("./handler/user");
-const { getAllTransaksiHandler, getTransaksiByUserHandler, buatTransaksiHandler, getTransaksiByStatusHandler, updateTransaksiHandler, getTransaksiByUserAndStatusHandler, getTransaksiDetailHandler, updateStatusTransaksiHandler } = require("./handler/transaksi");
+const { getAllTransaksiHandler, getTransaksiByUserHandler, buatTransaksiHandler, getTransaksiByStatusHandler, updateTransaksiHandler, getTransaksiByUserAndStatusHandler, getTransaksiDetailHandler, updateStatusTransaksiHandler, getTransactionReportByTime, getTransactionReportByQuantityAndTime, getTransactionReportByDate, getTransactionReportByDay, getTransactionReportByMonth, getTransactionReportByYear } = require("./handler/transaksi");
 const { loginAdminHandler, registerAdminHandler, getAllAdminHandler } = require("./handler/admin");
 
 const routes = [
@@ -125,6 +125,26 @@ const routes = [
     method: 'PUT',
     path: '/transaksi-status',
     handler: updateStatusTransaksiHandler
+  },
+  {
+    method: 'GET',
+    path: '/laporan-day',
+    handler: getTransactionReportByDay
+  },
+  {
+    method: 'GET',
+    path: '/laporan-month',
+    handler: getTransactionReportByMonth
+  },
+  {
+    method: 'GET',
+    path: '/laporan-year',
+    handler: getTransactionReportByYear
+  },
+  {
+    method: 'GET',
+    path: '/laporan-batik-terjual',
+    handler: getTransactionReportByQuantityAndTime
   },
 ];
 
