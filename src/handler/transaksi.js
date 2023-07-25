@@ -1,7 +1,18 @@
 'use strict';
 const Transaksi = require('../models/transaksi');
 const { v4: uuidv4 } = require('uuid');
-const Sequelize = require('sequelize');
+const { Sequelize, Op } = require('sequelize');
+
+const formatDate = (isStart, date) => {
+
+  // Mengubah bagian jam menjadi "00:00:00"
+  const modifiedTimePart = isStart ? "00:00:00" : "11:59:59";
+  
+  // Menggabungkan kembali bagian tanggal dan jam yang telah diubah
+  const modifiedDateTime = `${date}T${modifiedTimePart}.000Z`;
+  
+  return new Date(modifiedDateTime);
+};
 
 const getAllTransaksiHandler = async (request, h) => {
   
@@ -169,13 +180,20 @@ const getTransactionReportByQuantityAndTime = async (request, h) => {
 // Function to get transaction report by transaction date
 const getTransactionReportByDay = async (request, h) => {
   try {
+    const { startDate, endDate } = request.query;
+
     // Group by createdAt date and sum the meter and hargaTotal
     var report = await Transaksi.findAll({
       attributes: [
         [Sequelize.fn('DATE_FORMAT', Sequelize.col('createdAt'), '%Y-%m-%d'), 'tanggalTransaksi'],
         [Sequelize.fn('sum', Sequelize.col('meter')), 'totalTerjual'],
         [Sequelize.fn('sum', Sequelize.col('hargaTotal')), 'totalPemasukan'],
-      ],
+      ],      
+      where: {
+        // Menggunakan operator '>=', artinya tanggalTransaksi harus lebih besar atau sama dengan start
+        // Dan operator '<=', artinya tanggalTransaksi harus lebih kecil atau sama dengan end
+        createdAt: { [Op.gte]: formatDate(true, startDate), [Op.lte]: formatDate(false, endDate) }
+      },
       group: [Sequelize.fn('DATE_FORMAT', Sequelize.col('createdAt'), '%Y-%m-%d')],
       order: [[Sequelize.literal('tanggalTransaksi'), 'DESC']],
     });
