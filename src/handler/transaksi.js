@@ -14,6 +14,31 @@ const formatDate = (isStart, date) => {
   return new Date(modifiedDateTime);
 };
 
+// Fungsi untuk menambahkan data dengan totalTerjual dan totalPemasukan 0 untuk setiap tanggal yang tidak ada di data
+function addMissingData(arr, qStartDate, qEndDate) {
+  const currentDate = formatDate(true, qStartDate); // Tanggal terawal dalam data Anda
+  const endDate = formatDate(false, qEndDate);   // Tanggal terakhir dalam data Anda
+  const oneDay = 24 * 60 * 60 * 1000; // Satu hari dalam milidetik
+
+  while (currentDate <= endDate) {
+      const currentDateStr = currentDate.toISOString().split("T")[0];
+      const existingData = arr.find(item => item.tanggalTransaksi === currentDateStr);
+
+      if (!existingData) {
+          arr.push({
+              "tanggalTransaksi": currentDateStr,
+              "totalTerjual": "0",
+              "totalPemasukan": "0"
+          });
+      }
+
+      currentDate.setTime(currentDate.getTime() + oneDay);
+  }
+
+  // Urutkan data berdasarkan tanggalTransaksi secara menurun
+  return arr.sort((a, b) => new Date(b.tanggalTransaksi) - new Date(a.tanggalTransaksi));
+}
+
 const getAllTransaksiHandler = async (request, h) => {
   
   var transaksi = await Transaksi.findAll({ order: [['createdAt', 'DESC']] });
@@ -197,9 +222,15 @@ const getTransactionReportByDay = async (request, h) => {
       group: [Sequelize.fn('DATE_FORMAT', Sequelize.col('createdAt'), '%Y-%m-%d')],
       order: [[Sequelize.literal('tanggalTransaksi'), 'DESC']],
     });
+    const reportDataValues = report.map(data => data.dataValues);
+
+    console.log(reportDataValues);
+
+    const addedMissingData = addMissingData(reportDataValues, startDate, endDate);
+
     return h.response({
       status: 'success',
-      data: report
+      data: addedMissingData
     })
   } catch (error) {
     return h.response({
