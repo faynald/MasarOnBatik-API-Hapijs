@@ -40,8 +40,18 @@ function addMissingData(arr, qStartDate, qEndDate) {
 }
 
 const getAllTransaksiHandler = async (request, h) => {
-  
-  var transaksi = await Transaksi.findAll({ order: [['createdAt', 'DESC']] });
+    
+  const { limit } = request.query;
+
+  if (limit) {
+    var transaksi = await Transaksi.findAll({ 
+      order: [['createdAt', 'DESC']],
+      limit: parseInt(limit)
+    });
+  } else {
+    var transaksi = await Transaksi.findAll({ order: [['createdAt', 'DESC']] });
+  }
+
   transaksi = transaksi.map(data => data.dataValues);
   return h.response({
     status: 'success',
