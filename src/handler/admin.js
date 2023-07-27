@@ -45,8 +45,25 @@ const loginAdminHandler = async (request, h) => {
   }
 };
 
+const getAdminProfile = async (request, h) => {
+  const { id } = request.params;
+  
+  const data = await Admin.findOne({ where: { id: id } });
+  if (data) { 
+    return h.response({
+      status: 'success',
+      data: data.toJSON()
+    })
+  } else {
+    return h.response({
+      status: 'email atau password salah'
+    }).code(404)
+  }
+};
+
 module.exports = { 
   getAllAdminHandler, 
   registerAdminHandler,
   loginAdminHandler,
+  getAdminProfile
 };
