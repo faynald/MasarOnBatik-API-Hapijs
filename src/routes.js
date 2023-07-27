@@ -25,6 +25,11 @@ const routes = [
     handler: registerUserHandler
   },
   {
+    method: 'PUT',
+    path: '/user',
+    handler: updateUserHandler
+  },
+  {
     method: 'POST',
     path: '/login',
     handler: loginUserHandler

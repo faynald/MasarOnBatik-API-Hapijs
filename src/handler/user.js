@@ -45,8 +45,33 @@ const loginUserHandler = async (request, h) => {
   }
 };
 
+const updateUserHandler = async (request, h) => {
+  const { id, nama, email, password, telepon } = request.payload;
+  
+  const user = await User.findOne({ where: { id: id} });
+
+  if (user) {
+    try {
+      await user.update({ nama, email, password, telepon });
+      return h.response({
+        status: 'success',
+        data: user
+      })
+    } catch (error) {
+      return h.response({
+        status: 'Terjadi Kesalahan'
+      })
+    }
+  } else {
+    return h.response({
+      status: 'data tidak ditemukan'
+    }).code(404)
+  }
+};
+
 module.exports = { 
   getAllUserHandler, 
   registerUserHandler,
   loginUserHandler,
+  updateUserHandler
 };
