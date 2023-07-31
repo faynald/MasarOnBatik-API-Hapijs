@@ -232,10 +232,10 @@ const getTransactionReportByDay = async (request, h) => {
       group: [Sequelize.fn('DATE_FORMAT', Sequelize.col('createdAt'), '%Y-%m-%d')],
       order: [[Sequelize.literal('tanggalTransaksi'), 'DESC']],
     });
+
     const reportDataValues = report.map(data => data.dataValues);
 
-    console.log(reportDataValues);
-
+    // menambahkan data dengan totalTerjual dan totalPemasukan 0 untuk setiap tanggal yang tidak ada dalam kriteria
     const addedMissingData = addMissingData(reportDataValues, startDate, endDate);
 
     return h.response({
@@ -253,7 +253,7 @@ const getTransactionReportByDay = async (request, h) => {
 // Function to get transaction report by transaction month
 const getTransactionReportByMonth = async (request, h) => {
   try {
-    const groupBy = '%Y-%m';
+    const { year } = request.query;
     // Group by createdAt date and sum the meter and hargaTotal
     var report = await Transaksi.findAll({
       attributes: [
@@ -261,6 +261,12 @@ const getTransactionReportByMonth = async (request, h) => {
         [Sequelize.fn('sum', Sequelize.col('meter')), 'totalTerjual'],
         [Sequelize.fn('sum', Sequelize.col('hargaTotal')), 'totalPemasukan'],
       ],
+      where: Sequelize.where(
+        Sequelize.fn('YEAR', Sequelize.col('createdAt')),
+        {
+          [Sequelize.Op.eq]: year, // find where createdAt === request.query
+        }
+      ),
       group: [Sequelize.fn('DATE_FORMAT', Sequelize.col('createdAt'), '%Y-%m')],
       order: [[Sequelize.literal('tanggalTransaksi'), 'DESC']],
     });
@@ -276,23 +282,18 @@ const getTransactionReportByMonth = async (request, h) => {
   }
 }
 
-// Function to get transaction report by transaction month
-const getTransactionReportByYear = async (request, h) => {
+// Function to get transaction report by transaction date
+const getYearData = async (request, h) => {
   try {
-    const groupBy = '%Y-%m';
     // Group by createdAt date and sum the meter and hargaTotal
-    var report = await Transaksi.findAll({
+    const distinctYears = await Transaksi.findAll({
       attributes: [
-        [Sequelize.fn('DATE_FORMAT', Sequelize.col('createdAt'), '%Y'), 'tanggalTransaksi'],
-        [Sequelize.fn('sum', Sequelize.col('meter')), 'totalTerjual'],
-        [Sequelize.fn('sum', Sequelize.col('hargaTotal')), 'totalPemasukan'],
-      ],
-      group: [Sequelize.fn('DATE_FORMAT', Sequelize.col('createdAt'), '%Y')],
-      order: [[Sequelize.literal('tanggalTransaksi'), 'DESC']],
+        [Sequelize.fn('DISTINCT', Sequelize.fn('YEAR', Sequelize.col('createdAt'))), 'tahun']
+      ]
     });
     return h.response({
       status: 'success',
-      data: report
+      data: distinctYears
     })
   } catch (error) {
     return h.response({
@@ -313,6 +314,6 @@ module.exports = {
   updateStatusTransaksiHandler,
   getTransactionReportByDay,
   getTransactionReportByMonth,
-  getTransactionReportByYear,
-  getTransactionReportByQuantityAndTime
+  getTransactionReportByQuantityAndTime,
+  getYearData
 }
