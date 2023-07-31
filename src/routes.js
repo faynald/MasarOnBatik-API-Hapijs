@@ -1,14 +1,12 @@
 const { getAllBatikHandler, inputBatikHandler, updateBatikHandler, getBatikByIdHandler, deleteBatikHandler } = require("./handler/batik");
-const { getAllUserHandler, registerUserHandler, loginUserHandler } = require("./handler/user");
-const { getAllTransaksiHandler, getTransaksiByUserHandler, buatTransaksiHandler, getTransaksiByStatusHandler, updateTransaksiHandler, getTransaksiByUserAndStatusHandler, getTransaksiDetailHandler, updateStatusTransaksiHandler, getTransactionReportByTime, getTransactionReportByQuantityAndTime, getTransactionReportByDate, getTransactionReportByDay, getTransactionReportByMonth, getTransactionReportByYear } = require("./handler/transaksi");
-const { loginAdminHandler, registerAdminHandler, getAllAdminHandler } = require("./handler/admin");
 const { getAllUserHandler, registerUserHandler, loginUserHandler, updateUserHandler, updatePhotoUser } = require("./handler/user");
+const { getAllTransaksiHandler, getTransaksiByUserHandler, buatTransaksiHandler, getTransaksiByStatusHandler, updateTransaksiHandler, getTransaksiByUserAndStatusHandler, getTransaksiDetailHandler, updateStatusTransaksiHandler, getTransactionReportByTime, getTransactionReportByQuantityAndTime, getTransactionReportByDate, getTransactionReportByDay, getTransactionReportByMonth, getTransactionReportByYear, getYearData } = require("./handler/transaksi");
 const { loginAdminHandler, registerAdminHandler, getAllAdminHandler, getAdminProfile } = require("./handler/admin");
 
 const routes = [
   {
     method: 'GET',
-    path: '/',
+    path: '/api',
     handler: async (request, h) => {
       return h.response({
         status: 'Hello World'
@@ -17,22 +15,22 @@ const routes = [
   },
   {
     method: 'GET',
-    path: '/user',
+    path: '/api/user',
     handler: getAllUserHandler,
   },
   {
     method: 'POST',
-    path: '/user',
+    path: '/api/user',
     handler: registerUserHandler
   },
   {
     method: 'PUT',
-    path: '/user',
+    path: '/api/user',
     handler: updateUserHandler
   },
   {
     method: 'PUT',
-    path: '/user-photo',
+    path: '/api/user-photo',
     options: {
       payload: {
         output: 'stream',
@@ -46,42 +44,42 @@ const routes = [
   },
   {
     method: 'POST',
-    path: '/login',
+    path: '/api/login',
     handler: loginUserHandler
   },
   {
     method: 'GET',
-    path: '/admin',
+    path: '/api/admin',
     handler: getAllAdminHandler,
   },
   {
     method: 'POST',
-    path: '/admin',
+    path: '/api/admin',
     handler: registerAdminHandler
   },
   {
     method: 'POST',
-    path: '/admin/login',
+    path: '/api/admin/login',
     handler: loginAdminHandler
   },
   {
     method: 'GET',
-    path: '/admin/{id}',
+    path: '/api/admin/{id}',
     handler: getAdminProfile
   },
   {
     method: 'GET',
-    path: '/batik',
+    path: '/api/batik',
     handler: getAllBatikHandler
   },
   {
     method: 'GET',
-    path: '/batik/{id}',
+    path: '/api/batik/{id}',
     handler: getBatikByIdHandler
   },
   {
     method: 'POST',
-    path: '/batik',
+    path: '/api/batik',
     options: {
       payload: {
         output: 'stream',
@@ -95,7 +93,7 @@ const routes = [
   },
   {
     method: 'PUT',
-    path: '/batik',
+    path: '/api/batik',
     options: {
       payload: {
         output: 'stream',
@@ -109,68 +107,68 @@ const routes = [
   },
   {
     method: 'DELETE',
-    path: '/batik/{id}',
+    path: '/api/batik/{id}',
     handler: deleteBatikHandler
   },
   {
     method: 'GET',
-    path: '/transaksi',
+    path: '/api/transaksi',
     handler: getAllTransaksiHandler
   },
   {
     method: 'GET',
-    path: '/transaksi/{id}',
+    path: '/api/transaksi/{id}',
     handler: getTransaksiByUserHandler
   },
   {
     method: 'GET',
-    path: '/transaksi-detail/{id}',
+    path: '/api/transaksi-detail/{id}',
     handler: getTransaksiDetailHandler
   },
   {
     method: 'GET',
-    path: '/transaksi-filter',
+    path: '/api/transaksi-filter',
     handler: getTransaksiByStatusHandler
   },
   {
     method: 'GET',
-    path: '/transaksi-user-filter',
+    path: '/api/transaksi-user-filter',
     handler: getTransaksiByUserAndStatusHandler
   },
   {
     method: 'POST',
-    path: '/transaksi',
+    path: '/api/transaksi',
     handler: buatTransaksiHandler
   },
   {
     method: 'PUT',
-    path: '/transaksi',
+    path: '/api/transaksi',
     handler: updateTransaksiHandler
   },
   {
     method: 'PUT',
-    path: '/transaksi-status',
+    path: '/api/transaksi-status',
     handler: updateStatusTransaksiHandler
   },
   {
     method: 'GET',
-    path: '/laporan-day',
+    path: '/api/laporan-day',
     handler: getTransactionReportByDay
   },
   {
     method: 'GET',
-    path: '/laporan-month',
+    path: '/api/laporan-month',
     handler: getTransactionReportByMonth
   },
   {
     method: 'GET',
-    path: '/laporan-year',
-    handler: getTransactionReportByYear
+    path: '/api/laporan-batik-terjual',
+    handler: getTransactionReportByQuantityAndTime
   },
   {
     method: 'GET',
-    path: '/laporan-batik-terjual',
-    handler: getTransactionReportByQuantityAndTime
+    path: '/api/transaksi-year',
+    handler: getYearData
   },
 ];
 
