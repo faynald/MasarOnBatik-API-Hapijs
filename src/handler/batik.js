@@ -18,7 +18,6 @@ const saveFiles = async (files) => {
         host: process.env.FTP_HOST,
         user: process.env.FTP_USERNAME,
         password: process.env.FTP_PASSWORD,
-        secure: true
     })
   }
   catch(err) {
@@ -30,12 +29,12 @@ const saveFiles = async (files) => {
     for (const file of files) {
       const fileName = `${getTimeInJakartaWithoutSymbols()}${path.extname(file.hapi.filename)}`;
       fileNameArray.push(fileName);
-      await client.uploadFrom(file, `public_html/${fileName}`)
+      await client.uploadFrom(file, fileName)
     }
   } else if (files && !Array.isArray(files)) { // jika file hanya 1
     const fileName = `${getTimeInJakartaWithoutSymbols()}${path.extname(files.hapi.filename)}`;
     fileNameArray.push(fileName);
-    await client.uploadFrom(files, `public_html/${fileName}`);
+    await client.uploadFrom(files, fileName);
   } else if(!files) { // file tidak diisi
     console.log("foto kosong");
   }
@@ -50,13 +49,12 @@ const deleteFiles = async (files) => {
     await client.access({
       host: process.env.FTP_HOST,
       user: process.env.FTP_USERNAME,
-      password: process.env.FTP_PASSWORD,
-      secure: true
+      password: process.env.FTP_PASSWORD
   })
 
   if(files.length > 0) { // jika upload lebih dari 1
     for (const file of files) {
-      await client.remove(`public_html/${file}`);
+      await client.remove(file);
     }
   }
   } catch (error) {
@@ -174,5 +172,6 @@ module.exports = {
   getBatikByIdHandler,
   inputBatikHandler,
   updateBatikHandler,
-  deleteBatikHandler
+  deleteBatikHandler,
+  saveFiles
 }
