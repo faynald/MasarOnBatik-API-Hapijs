@@ -30,18 +30,25 @@ const registerAdminHandler = async (request, h) => {
 };
 
 const loginAdminHandler = async (request, h) => {
-  const { email, password} = request.payload;
+  try{
+    const { email, password} = request.payload;
   
-  const data = await Admin.findOne({ where: { email: email, password: password } });
-  if (data) { 
+    const data = await Admin.findOne({ where: { email: email, password: password } });
+    if (data) { 
+      return h.response({
+        status: 'success',
+        data: data.toJSON()
+      })
+    } else {
+      return h.response({
+        status: 'email atau password salah'
+      }).code(404)
+    }
+  } catch (e) {
     return h.response({
-      status: 'success',
-      data: data.toJSON()
+      status: 'gagal',
+      message: e.message
     })
-  } else {
-    return h.response({
-      status: 'email atau password salah'
-    }).code(404)
   }
 };
 
