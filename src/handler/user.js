@@ -2,15 +2,34 @@
 const User = require('../models/user');
 const { saveFiles } = require('./batik');
 
-const getAllUserHandler = async (request, h) => {
-  
-  const getUser = await User.findAll();
-  const userDataValues = getUser.map(data => data.dataValues);
-  return h.response({
-    status: 'success',
-    data: userDataValues
-    
-  }).code(200);
+const getUserHandler = async (request, h) => {
+
+  const { id } = request.query;
+
+  // cek apakah ingin mendapatkan semua data atau hanya id tertentu
+  if (id) { 
+    var getUser = await User.findOne({ where: { id: id } });
+    // cek jika ada id yang match
+    if (getUser) {
+      return h.response({
+        status: 'success',
+        data: getUser.toJSON()
+      });
+    } else {
+      return h.response({
+        status: 'Data tidak ditemukan'
+      }).code(404)
+    }
+  // jika ingin mendapatkan semua data
+  } else {
+    var getUser = await User.findAll();
+    const userDataValues = getUser.map(data => data.dataValues);
+    return h.response({
+      status: 'success',
+      data: userDataValues
+      
+    }).code(200);
+  }
 };
 
 const registerUserHandler = async (request, h) => {
@@ -72,7 +91,6 @@ const updateUserHandler = async (request, h) => {
 
 const updatePhotoUser = async (request, h) => {
   const { id, fotoBaru } = request.payload;
-  console.log(fotoBaru);
   
   const user = await User.findOne({ where: { id: id} });
 
@@ -82,7 +100,6 @@ const updatePhotoUser = async (request, h) => {
     foto = await savedFotoName.join(',');
     try {
       await user.update({ foto });
-      console.log(user);
       return h.response({
         status: 'success',
         data: user
@@ -100,7 +117,7 @@ const updatePhotoUser = async (request, h) => {
 };
 
 module.exports = { 
-  getAllUserHandler, 
+  getUserHandler, 
   registerUserHandler,
   loginUserHandler,
   updateUserHandler,

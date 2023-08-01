@@ -1,5 +1,5 @@
 const { getAllBatikHandler, inputBatikHandler, updateBatikHandler, getBatikByIdHandler, deleteBatikHandler } = require("./handler/batik");
-const { getAllUserHandler, registerUserHandler, loginUserHandler, updateUserHandler, updatePhotoUser } = require("./handler/user");
+const { getUserHandler, registerUserHandler, loginUserHandler, updateUserHandler, updatePhotoUser } = require("./handler/user");
 const { getAllTransaksiHandler, getTransaksiByUserHandler, buatTransaksiHandler, getTransaksiByStatusHandler, updateTransaksiHandler, getTransaksiByUserAndStatusHandler, getTransaksiDetailHandler, updateStatusTransaksiHandler, getTransactionReportByTime, getTransactionReportByQuantityAndTime, getTransactionReportByDate, getTransactionReportByDay, getTransactionReportByMonth, getTransactionReportByYear, getYearData } = require("./handler/transaksi");
 const { loginAdminHandler, registerAdminHandler, getAllAdminHandler, getAdminProfile } = require("./handler/admin");
 
@@ -7,7 +7,7 @@ const routes = [
   {
     method: 'GET',
     path: '/api/v1',
-    handler: async ((req, res)=>{
+    handler: ((req, res)=>{
         return res.response({
             status: 200, 
             message: 'Use {/api/v1} for main routes'
@@ -16,8 +16,8 @@ const routes = [
   },
   {
     method: 'GET',
-    handler: getAllUserHandler,
     path: '/api/v1/user',
+    handler: getUserHandler,
   },
   {
     method: 'POST',
