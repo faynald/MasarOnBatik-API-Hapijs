@@ -68,8 +68,18 @@ const deleteFiles = async (files) => {
 }
 
 const getAllBatikHandler = async (request, h) => {
-  
-  var batik = await Batik.findAll();
+
+  const { limit } = request.query;
+
+  if (limit) {
+    var batik = await Batik.findAll({ 
+      order: [['createdAt', 'DESC']],
+      limit: parseInt(limit)
+    });
+  } else {
+    var batik = await Batik.findAll({ order: [['createdAt', 'DESC']] });
+  }
+
   batik = batik.map(data => data.dataValues);
   return h.response({
     status: 'success',
