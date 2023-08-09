@@ -6,32 +6,32 @@ const { loginAdminHandler, registerAdminHandler, getAllAdminHandler, getAdminPro
 const routes = [
   {
     method: 'GET',
-    path: '/api/v1',
+    path: '/',
     handler: ((req, res)=>{
         return res.response({
             status: 200, 
-            message: 'Use {/api/v1} for main routes'
+            message: 'Welcome to MasarOnBatik API'
         }).code(200)
     })
   },
   {
     method: 'GET',
-    path: '/api/v1/user',
+    path: '/user',
     handler: getUserHandler,
   },
   {
     method: 'POST',
-    path: '/api/v1/user',
+    path: '/user',
     handler: registerUserHandler
   },
   {
     method: 'PUT',
-    path: '/api/v1/user',
+    path: '/user',
     handler: updateUserHandler
   },
   {
     method: 'PUT',
-    path: '/api/v1/user-photo',
+    path: '/user-photo',
     options: {
       payload: {
         output: 'stream',
@@ -45,17 +45,17 @@ const routes = [
   },
   {
     method: 'POST',
-    path: '/api/v1/login',
+    path: '/login',
     handler: loginUserHandler
   },
   {
     method: 'GET',
-    path: '/api/v1/admin',
+    path: '/admin',
     handler: getAllAdminHandler,
   },
   {
     method: 'POST',
-    path: '/api/v1/admin',
+    path: '/admin',
     handler: registerAdminHandler
   },
   {
@@ -74,27 +74,27 @@ const routes = [
   },
   {
     method: 'POST',
-    path: '/api/v1/admin/login',
+    path: '/admin/login',
     handler: loginAdminHandler
   },
   {
     method: 'GET',
-    path: '/api/v1/admin/{id}',
+    path: '/admin/{id}',
     handler: getAdminProfile
   },
   {
     method: 'GET',
-    path: '/api/v1/batik',
+    path: '/batik',
     handler: getAllBatikHandler
   },
   {
     method: 'GET',
-    path: '/api/v1/batik/{id}',
+    path: '/batik/{id}',
     handler: getBatikByIdHandler
   },
   {
     method: 'POST',
-    path: '/api/v1/batik',
+    path: '/batik',
     options: {
       payload: {
         output: 'stream',
@@ -108,7 +108,7 @@ const routes = [
   },
   {
     method: 'PUT',
-    path: '/api/v1/batik',
+    path: '/batik',
     options: {
       payload: {
         output: 'stream',
@@ -122,67 +122,67 @@ const routes = [
   },
   {
     method: 'DELETE',
-    path: '/api/v1/batik/{id}',
+    path: '/batik/{id}',
     handler: deleteBatikHandler
   },
   {
     method: 'GET',
-    path: '/api/v1/transaksi',
+    path: '/transaksi',
     handler: getAllTransaksiHandler
   },
   {
     method: 'GET',
-    path: '/api/v1/transaksi/{id}',
+    path: '/transaksi/{id}',
     handler: getTransaksiByUserHandler
   },
   {
     method: 'GET',
-    path: '/api/v1/transaksi-detail/{id}',
+    path: '/transaksi-detail/{id}',
     handler: getTransaksiDetailHandler
   },
   {
     method: 'GET',
-    path: '/api/v1/transaksi-filter',
+    path: '/transaksi-filter',
     handler: getTransaksiByStatusHandler
   },
   {
     method: 'GET',
-    path: '/api/v1/transaksi-user-filter',
+    path: '/transaksi-user-filter',
     handler: getTransaksiByUserAndStatusHandler
   },
   {
     method: 'POST',
-    path: '/api/v1/transaksi',
+    path: '/transaksi',
     handler: buatTransaksiHandler
   },
   {
     method: 'PUT',
-    path: '/api/v1/transaksi',
+    path: '/transaksi',
     handler: updateTransaksiHandler
   },
   {
     method: 'PUT',
-    path: '/api/v1/transaksi-status',
+    path: '/transaksi-status',
     handler: updateStatusTransaksiHandler
   },
   {
     method: 'GET',
-    path: '/api/v1/laporan-day',
+    path: '/laporan-day',
     handler: getTransactionReportByDay
   },
   {
     method: 'GET',
-    path: '/api/v1/laporan-month',
+    path: '/laporan-month',
     handler: getTransactionReportByMonth
   },
   {
     method: 'GET',
-    path: '/api/v1/laporan-batik-terjual',
+    path: '/laporan-batik-terjual',
     handler: getTransactionReportByQuantityAndTime
   },
   {
     method: 'GET',
-    path: '/api/v1/transaksi-year',
+    path: '/transaksi-year',
     handler: getYearData
   },
 ];
