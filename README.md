@@ -8,7 +8,7 @@ You need to have [Node.js](https://nodejs.org) and [Xampp](https://www.apachefri
 
 ### Setup database and FTP
 1. Start apache, mysql, and filezilla on Xampp Control Panel
-2. Add new database
+2. Add new database on phpmyadmin
 3. Add new user on filezilla 
 
 ### Create .env
