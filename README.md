@@ -57,3 +57,6 @@ Login :
 http POST http://localhost:5000/user email='farhan@gmail.com' password='farhan'
 ```
 
+## Author
+
+Created and maintained by Farhan Reynaldi ([@faynald](https://github.com/faynald)).
