@@ -1,7 +1,7 @@
 const { getAllBatikHandler, inputBatikHandler, updateBatikHandler, getBatikByIdHandler, deleteBatikHandler } = require("./handler/batik");
 const { getUserHandler, registerUserHandler, loginUserHandler, updateUserHandler, updatePhotoUser } = require("./handler/user");
 const { getAllTransaksiHandler, getTransaksiByUserHandler, buatTransaksiHandler, getTransaksiByStatusHandler, updateTransaksiHandler, getTransaksiByUserAndStatusHandler, getTransaksiDetailHandler, updateStatusTransaksiHandler, getTransactionReportByTime, getTransactionReportByQuantityAndTime, getTransactionReportByDate, getTransactionReportByDay, getTransactionReportByMonth, getTransactionReportByYear, getYearData } = require("./handler/transaksi");
-const { loginAdminHandler, registerAdminHandler, getAllAdminHandler, getAdminProfile } = require("./handler/admin");
+const { loginAdminHandler, registerAdminHandler, getAllAdminHandler, getAdminProfile, updatePhotoAdmin } = require("./handler/admin");
 
 const routes = [
   {
@@ -57,6 +57,20 @@ const routes = [
     method: 'POST',
     path: '/api/v1/admin',
     handler: registerAdminHandler
+  },
+  {
+    method: 'PUT',
+    path: '/admin-photo',
+    options: {
+      payload: {
+        output: 'stream',
+        parse: true,
+        allow: 'multipart/form-data',
+        multipart : true,
+        maxBytes: 30 * 1024 * 1024 // 30MB dalam byte
+      }
+    },
+    handler: updatePhotoAdmin
   },
   {
     method: 'POST',
