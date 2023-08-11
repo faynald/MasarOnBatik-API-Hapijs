@@ -1,6 +1,6 @@
 # MasarOnBatik API - Hapi.js
 
-`Hapi.js` is a `Node.js` framework for building web APIs, offering strong configuration tools and simplified development. With built-in features for routing, authentication, and error handling, it enables efficient creation of stable and scalable web services. If you are looking for expressjs version, go to this [repo](https://github.com/faynald/MasarOnBatik-API).
+`Hapi.js` is a `Node.js` framework for building web APIs, offering strong configuration tools and simplified development. With built-in features for routing, authentication, and error handling, it enables efficient creation of stable and scalable web services. If you are looking for `Express.js` version, go to this [repo](https://github.com/faynald/MasarOnBatik-API).
 
 ## Tech Stack
 - Hapi.js - Node.js framework for building web APIs, offering strong configuration tools and simplified development.
